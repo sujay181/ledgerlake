@@ -1,0 +1,9 @@
+[project]
+name = "ledgerlake"
+version = "0.1.0"
+description = "Metadata-driven lakehouse framework for Databricks (portfolio project)"
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-p no:cacheprovider"

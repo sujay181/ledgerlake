@@ -1,0 +1,4 @@
+# Local development and tests. Databricks provides pyspark/delta at runtime.
+pyspark==4.0.1
+pytest>=8
+pyyaml>=6
