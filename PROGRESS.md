@@ -1,5 +1,5 @@
 # Progress
-<!-- ledgerlake-day: 3 -->
+<!-- ledgerlake-day: 4 -->
 
 LedgerLake is built in 13 daily steps. Each day's commit adds code; the checklist under it is the hands-on step that proves it works on Databricks. Tick the boxes and add your notes and numbers as you go.
 
@@ -39,6 +39,20 @@ LedgerLake is built in 13 daily steps. Each day's commit adds code; the checklis
 - [ ] Add firewall rules: your PC's IP, plus `0.0.0.0 - 255.255.255.255` for Databricks serverless (fake data, strong password)
 - [ ] Install ODBC Driver 18 + `pip install pyodbc`, set the LL_SQL_* variables and run `python source_data/load_sqlserver.py --init source_data/generated/sqlserver/batch_01_historical`
 - [ ] In the Azure query editor run `SELECT COUNT(*) FROM core.transactions` and check it matches the generator
+
+**Notes / numbers / issues hit:**
+-
+
+## Day 4 · Metadata framework · 2026-10-31
+**Built:** Table registry and load parameters for 6 source tables and 6 gold tables; config validation and SQL identifier guards; watermark and append-only audit helpers; setup notebook that creates the catalog, schemas, landing volume and metadata tables.
+
+**Files:** `src/ledgerlake/registry.py`, `src/ledgerlake/metadata.py`, `setup/00_create_catalog_and_metadata.py`, `tests/test_metadata.py`
+
+**Hands-on step (do this in Databricks / Azure today):**
+- [ ] In Databricks: **Workspace > Create > Git folder** and paste this repo's URL
+- [ ] Run `setup/00_create_catalog_and_metadata` (if creating a catalog fails, use `workspace` as the catalog)
+- [ ] Open Catalog Explorer and look at `metadata.table_registry` and `metadata.table_parameters`
+- [ ] Be able to explain: why FULL for branches, MERGE for customers, APPEND for transactions?
 
 **Notes / numbers / issues hit:**
 -
