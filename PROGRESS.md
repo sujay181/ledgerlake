@@ -1,5 +1,5 @@
 # Progress
-<!-- ledgerlake-day: 4 -->
+<!-- ledgerlake-day: 5 -->
 
 LedgerLake is built in 13 daily steps. Each day's commit adds code; the checklist under it is the hands-on step that proves it works on Databricks. Tick the boxes and add your notes and numbers as you go.
 
@@ -53,6 +53,17 @@ LedgerLake is built in 13 daily steps. Each day's commit adds code; the checklis
 - [ ] Run `setup/00_create_catalog_and_metadata` (if creating a catalog fails, use `workspace` as the catalog)
 - [ ] Open Catalog Explorer and look at `metadata.table_registry` and `metadata.table_parameters`
 - [ ] Be able to explain: why FULL for branches, MERGE for customers, APPEND for transactions?
+
+**Notes / numbers / issues hit:**
+-
+
+## Day 5 · Bronze helpers and secrets · 2026-11-01
+**Built:** Source-to-bronze helpers for SQL Server (JDBC, incremental by source watermark) and landing files (Auto Loader, availableNow, schema hints, rescued data); secrets setup with the Databricks SDK and a JDBC connectivity check.
+
+**Files:** `src/ledgerlake/bronze.py`, `tests/test_bronze.py`, `setup/01_create_secrets.py`
+
+**Hands-on step (do this in Databricks / Azure today):**
+- [ ] Pull the Git folder, run `setup/01_create_secrets`; the last cell must show the customer count from SQL Server. Then remove the widgets and clear outputs
 
 **Notes / numbers / issues hit:**
 -

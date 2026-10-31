@@ -1,6 +1,6 @@
 # LedgerLake · metadata-driven lakehouse for a digital bank
 
-> **Building in public: day 4 of 13.** Each day adds one layer of the pipeline and the
+> **Building in public: day 5 of 13.** Each day adds one layer of the pipeline and the
 > Databricks step that proves it works. See [PROGRESS.md](PROGRESS.md). Full documentation lands on day 13.
 
 LedgerLake is an end-to-end data engineering project on **Databricks Free Edition** for Coral Digital Bank, a fictional Australian neobank (all data is synthetic). It loads core-banking tables from **SQL Server** and partner files from a **landing volume** into **bronze, silver and gold** layers in **Unity Catalog**. Metadata tables decide what loads and how (FULL / APPEND / MERGE, keys, watermarks), so four generic notebooks load every table. It runs on **Databricks Jobs**, emails a run summary, and serves an **AI/BI dashboard** and a **Genie** space.
@@ -10,9 +10,9 @@ LedgerLake is an end-to-end data engineering project on **Databricks Free Editio
 - **Day 2 · Data generator**: Data generator for Coral Digital Bank (branches, customers, accounts, transactions, credit bureau reports, payment gateway events) with a historical and an incremental batch and deliberate data issues; generator tests; GitHub Actions CI.
 - **Day 3 · SQL Server source**: SQL Server DDL for the core-banking schema and a pyodbc loader with upserts for the historical and incremental batches.
 - **Day 4 · Metadata framework**: Table registry and load parameters for 6 source tables and 6 gold tables; config validation and SQL identifier guards; watermark and append-only audit helpers; setup notebook that creates the catalog, schemas, landing volume and metadata tables.
+- **Day 5 · Bronze helpers and secrets**: Source-to-bronze helpers for SQL Server (JDBC, incremental by source watermark) and landing files (Auto Loader, availableNow, schema hints, rescued data); secrets setup with the Databricks SDK and a JDBC connectivity check.
 
 ## Coming next
-- Day 5 · Bronze helpers and secrets
 - Day 6 · Bronze ingestion
 - Day 7 · Silver layer
 - Day 8 · Gold layer, part 1
