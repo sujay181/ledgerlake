@@ -1,5 +1,5 @@
 # Progress
-<!-- ledgerlake-day: 5 -->
+<!-- ledgerlake-day: 6 -->
 
 LedgerLake is built in 13 daily steps. Each day's commit adds code; the checklist under it is the hands-on step that proves it works on Databricks. Tick the boxes and add your notes and numbers as you go.
 
@@ -64,6 +64,20 @@ LedgerLake is built in 13 daily steps. Each day's commit adds code; the checklis
 
 **Hands-on step (do this in Databricks / Azure today):**
 - [ ] Pull the Git folder, run `setup/01_create_secrets`; the last cell must show the customer count from SQL Server. Then remove the widgets and clear outputs
+
+**Notes / numbers / issues hit:**
+-
+
+## Day 6 · Bronze ingestion · 2026-11-02
+**Built:** Notebooks to list the registered tables, read each table's load parameters and load bronze from SQL Server or the landing volume.
+
+**Files:** `notebooks/ingestion/01_list_tables.py`, `notebooks/ingestion/02_read_table_parameters.py`, `notebooks/ingestion/03_source_to_bronze.py`
+
+**Hands-on step (do this in Databricks / Azure today):**
+- [ ] Pull the Git folder and run `notebooks/ingestion/01_list_tables` and `02_read_table_parameters`: check they match `metadata.table_registry`
+- [ ] Upload the two `*_batch_01.csv` files to `/Volumes/<catalog>/source/landing/<folder>/`
+- [ ] Run `notebooks/ingestion/03_source_to_bronze` with its default widgets (customers), then again for `payment_gateway_events` (table_id 6, source_system files)
+- [ ] Check `bronze.customers`, `bronze.payment_gateway_events` and `metadata.pipeline_runs`. Find the 3 rows with `_rescued_data`
 
 **Notes / numbers / issues hit:**
 -
