@@ -1,5 +1,5 @@
 # Progress
-<!-- ledgerlake-day: 6 -->
+<!-- ledgerlake-day: 7 -->
 
 LedgerLake is built in 13 daily steps. Each day's commit adds code; the checklist under it is the hands-on step that proves it works on Databricks. Tick the boxes and add your notes and numbers as you go.
 
@@ -78,6 +78,19 @@ LedgerLake is built in 13 daily steps. Each day's commit adds code; the checklis
 - [ ] Upload the two `*_batch_01.csv` files to `/Volumes/<catalog>/source/landing/<folder>/`
 - [ ] Run `notebooks/ingestion/03_source_to_bronze` with its default widgets (customers), then again for `payment_gateway_events` (table_id 6, source_system files)
 - [ ] Check `bronze.customers`, `bronze.payment_gateway_events` and `metadata.pipeline_runs`. Find the 3 rows with `_rescued_data`
+
+**Notes / numbers / issues hit:**
+-
+
+## Day 7 · Silver layer · 2026-11-03
+**Built:** Bronze-to-silver: slice by bronze watermark (late files still processed), keep the newest row per key, FULL overwrite / insert-only APPEND / newer-wins MERGE; local Spark tests on generated data.
+
+**Files:** `src/ledgerlake/silver.py`, `notebooks/ingestion/04_bronze_to_silver.py`, `tests/pipeline_helpers.py`, `tests/test_silver.py`, `tests/test_spark_silver.py`
+
+**Hands-on step (do this in Databricks / Azure today):**
+- [ ] Pull the Git folder. For all 6 tables run `03_source_to_bronze` then `04_bronze_to_silver` (change the two widgets per table, copying from `metadata.table_registry` / `table_parameters`)
+- [ ] Check silver has one row per primary key: `SELECT customer_id, COUNT(*) FROM silver.customers GROUP BY 1 HAVING COUNT(*) > 1` should return nothing
+- [ ] Look at `metadata.table_watermarks`: explain the difference between `source_watermark` and `bronze_watermark`
 
 **Notes / numbers / issues hit:**
 -
