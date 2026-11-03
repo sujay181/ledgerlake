@@ -1,6 +1,6 @@
 # LedgerLake · metadata-driven lakehouse for a digital bank
 
-> **Building in public: day 7 of 13.** Each day adds one layer of the pipeline and the
+> **Building in public: day 8 of 13.** Each day adds one layer of the pipeline and the
 > Databricks step that proves it works. See [PROGRESS.md](PROGRESS.md). Full documentation lands on day 13.
 
 LedgerLake is an end-to-end data engineering project on **Databricks Free Edition** for Coral Digital Bank, a fictional Australian neobank (all data is synthetic). It loads core-banking tables from **SQL Server** and partner files from a **landing volume** into **bronze, silver and gold** layers in **Unity Catalog**. Metadata tables decide what loads and how (FULL / APPEND / MERGE, keys, watermarks), so four generic notebooks load every table. It runs on **Databricks Jobs**, emails a run summary, and serves an **AI/BI dashboard** and a **Genie** space.
@@ -13,9 +13,9 @@ LedgerLake is an end-to-end data engineering project on **Databricks Free Editio
 - **Day 5 · Bronze helpers and secrets**: Source-to-bronze helpers for SQL Server (JDBC, incremental by source watermark) and landing files (Auto Loader, availableNow, schema hints, rescued data); secrets setup with the Databricks SDK and a JDBC connectivity check.
 - **Day 6 · Bronze ingestion**: Notebooks to list the registered tables, read each table's load parameters and load bronze from SQL Server or the landing volume.
 - **Day 7 · Silver layer**: Bronze-to-silver: slice by bronze watermark (late files still processed), keep the newest row per key, FULL overwrite / insert-only APPEND / newer-wins MERGE; local Spark tests on generated data.
+- **Day 8 · Gold layer, part 1**: Gold driver (SQL files rebuilt with CREATE OR REPLACE) and the first three gold tables: customer_360, branch_scorecard, channel_daily_summary.
 
 ## Coming next
-- Day 8 · Gold layer, part 1
 - Day 9 · Gold layer, part 2
 - Day 10 · Run summary email
 - Day 11 · Jobs as code

@@ -1,5 +1,5 @@
 # Progress
-<!-- ledgerlake-day: 7 -->
+<!-- ledgerlake-day: 8 -->
 
 LedgerLake is built in 13 daily steps. Each day's commit adds code; the checklist under it is the hands-on step that proves it works on Databricks. Tick the boxes and add your notes and numbers as you go.
 
@@ -91,6 +91,18 @@ LedgerLake is built in 13 daily steps. Each day's commit adds code; the checklis
 - [ ] Pull the Git folder. For all 6 tables run `03_source_to_bronze` then `04_bronze_to_silver` (change the two widgets per table, copying from `metadata.table_registry` / `table_parameters`)
 - [ ] Check silver has one row per primary key: `SELECT customer_id, COUNT(*) FROM silver.customers GROUP BY 1 HAVING COUNT(*) > 1` should return nothing
 - [ ] Look at `metadata.table_watermarks`: explain the difference between `source_watermark` and `bronze_watermark`
+
+**Notes / numbers / issues hit:**
+-
+
+## Day 8 · Gold layer, part 1 · 2026-11-04
+**Built:** Gold driver (SQL files rebuilt with CREATE OR REPLACE) and the first three gold tables: customer_360, branch_scorecard, channel_daily_summary.
+
+**Files:** `src/ledgerlake/gold.py`, `notebooks/gold/01_build_gold_table.py`, `gold_sql/customer_360.sql`, `gold_sql/branch_scorecard.sql`, `gold_sql/channel_daily_summary.sql`
+
+**Hands-on step (do this in Databricks / Azure today):**
+- [ ] Pull the Git folder and run `notebooks/gold/01_build_gold_table` for table_id 11, 12 and 13
+- [ ] Sanity-check: total deposits in `gold.customer_360` equal the positive balances in `silver.accounts`
 
 **Notes / numbers / issues hit:**
 -
