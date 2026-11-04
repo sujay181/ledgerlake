@@ -1,5 +1,5 @@
 # Progress
-<!-- ledgerlake-day: 8 -->
+<!-- ledgerlake-day: 9 -->
 
 LedgerLake is built in 13 daily steps. Each day's commit adds code; the checklist under it is the hands-on step that proves it works on Databricks. Tick the boxes and add your notes and numbers as you go.
 
@@ -103,6 +103,18 @@ LedgerLake is built in 13 daily steps. Each day's commit adds code; the checklis
 **Hands-on step (do this in Databricks / Azure today):**
 - [ ] Pull the Git folder and run `notebooks/gold/01_build_gold_table` for table_id 11, 12 and 13
 - [ ] Sanity-check: total deposits in `gold.customer_360` equal the positive balances in `silver.accounts`
+
+**Notes / numbers / issues hit:**
+-
+
+## Day 9 · Gold layer, part 2 · 2026-11-05
+**Built:** The remaining gold tables (bank_daily_kpis, credit_risk_watchlist, payment_gateway_daily) and local Spark tests of every gold query.
+
+**Files:** `gold_sql/bank_daily_kpis.sql`, `gold_sql/credit_risk_watchlist.sql`, `gold_sql/payment_gateway_daily.sql`, `tests/test_gold.py`, `tests/test_spark_gold.py`
+
+**Hands-on step (do this in Databricks / Azure today):**
+- [ ] Pull the Git folder and run `notebooks/gold/01_build_gold_table` for table_id 14, 15 and 16
+- [ ] Pick one finding you could say in an interview (e.g. which gateway has the worst p95 latency)
 
 **Notes / numbers / issues hit:**
 -
