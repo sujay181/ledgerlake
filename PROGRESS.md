@@ -1,5 +1,5 @@
 # Progress
-<!-- ledgerlake-day: 9 -->
+<!-- ledgerlake-day: 10 -->
 
 LedgerLake is built in 13 daily steps. Each day's commit adds code; the checklist under it is the hands-on step that proves it works on Databricks. Tick the boxes and add your notes and numbers as you go.
 
@@ -115,6 +115,19 @@ LedgerLake is built in 13 daily steps. Each day's commit adds code; the checklis
 **Hands-on step (do this in Databricks / Azure today):**
 - [ ] Pull the Git folder and run `notebooks/gold/01_build_gold_table` for table_id 14, 15 and 16
 - [ ] Pick one finding you could say in an interview (e.g. which gateway has the worst p95 latency)
+
+**Notes / numbers / issues hit:**
+-
+
+## Day 10 · Run summary email · 2026-11-06
+**Built:** HTML run summary from metadata.pipeline_runs (latest attempt per table, overall SUCCESS / FAILED / INCOMPLETE) sent with Gmail SMTP; HTML escaping of error text.
+
+**Files:** `src/ledgerlake/notify.py`, `notebooks/notify/01_send_run_summary.py`, `tests/test_notify.py`
+
+**Hands-on step (do this in Databricks / Azure today):**
+- [ ] Store your Gmail app password with `setup/01_create_secrets` (gmail_app_password widget only)
+- [ ] Run `notebooks/notify/01_send_run_summary` with run_id `manual`, sender = your Gmail, recipients = your email
+- [ ] Check the email arrives and the table matches `metadata.pipeline_runs`
 
 **Notes / numbers / issues hit:**
 -
