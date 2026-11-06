@@ -1,0 +1,28 @@
+# Databricks Asset Bundle: deploys the four LedgerLake jobs with one command.
+#   databricks bundle validate
+#   databricks bundle deploy
+#   databricks bundle run ll_master
+# Prefer clicking? README > "Create the jobs in the UI" builds the same jobs by hand.
+bundle:
+  name: ledgerlake
+
+include:
+  - resources/*.yml
+
+variables:
+  catalog:
+    description: Unity Catalog catalog for every layer (use "workspace" if you can't create catalogs)
+    default: ledgerlake
+  summary_recipients:
+    description: Comma-separated emails for the end-of-run summary (empty = print only)
+    default: ""
+  gmail_sender:
+    description: Gmail address that sends the summary (its app password is in the ledgerlake secret scope)
+    default: ""
+
+targets:
+  dev:
+    default: true
+    mode: development   # prefixes job names with [dev <you>] and keeps schedules paused
+    # workspace:
+    #   host: https://<your-workspace>.cloud.databricks.com   # or rely on your CLI profile

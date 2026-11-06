@@ -1,0 +1,148 @@
+# Four jobs, nested like this:
+#
+#   ll_master  (one run_id for the whole run)
+#     ├─ ingest_sqlserver ─► ll_source_ingest(source_system=sqlserver)
+#     │                        list_tables ─► for each table ─► ll_table_ingest
+#     │                                                         read_table_parameters ─► source_to_bronze ─► bronze_to_silver
+#     ├─ ingest_files     ─► ll_source_ingest(source_system=files)      (same shape)
+#     ├─ build_gold       ─► ll_gold: list_tables(silver) ─► for each gold table ─► build_gold_table
+#     └─ send_run_summary   (runs even if something failed)
+#
+# All tasks run on serverless compute (no cluster settings needed on Databricks Free Edition).
+# Ingestion runs sqlserver then files, one table at a time, to stay inside Free Edition's
+# limit of 5 concurrent tasks. Raise `concurrency` on a paid workspace.
+
+resources:
+  jobs:
+
+    ll_table_ingest:
+      name: ll_table_ingest
+      max_concurrent_runs: 2
+      parameters:
+        - name: catalog
+          default: ${var.catalog}
+        - name: run_id
+          default: "{{job.run_id}}"
+        - name: table_metadata
+          default: '{"table_id": 2, "table_name": "customers", "source_system": "sqlserver", "source_object": "core.customers", "target_layer": "silver"}'
+      tasks:
+        - task_key: read_table_parameters
+          notebook_task:
+            notebook_path: ../notebooks/ingestion/02_read_table_parameters.py
+        - task_key: source_to_bronze
+          depends_on:
+            - task_key: read_table_parameters
+          notebook_task:
+            notebook_path: ../notebooks/ingestion/03_source_to_bronze.py
+            base_parameters:
+              table_parameters: "{{tasks.read_table_parameters.values.table_parameters}}"
+        - task_key: bronze_to_silver
+          depends_on:
+            - task_key: source_to_bronze
+          notebook_task:
+            notebook_path: ../notebooks/ingestion/04_bronze_to_silver.py
+            base_parameters:
+              table_parameters: "{{tasks.read_table_parameters.values.table_parameters}}"
+
+    ll_source_ingest:
+      name: ll_source_ingest
+      max_concurrent_runs: 2
+      parameters:
+        - name: catalog
+          default: ${var.catalog}
+        - name: run_id
+          default: "{{job.run_id}}"
+        - name: source_system
+          default: sqlserver
+      tasks:
+        - task_key: list_tables
+          notebook_task:
+            notebook_path: ../notebooks/ingestion/01_list_tables.py
+        - task_key: for_each_table
+          depends_on:
+            - task_key: list_tables
+          for_each_task:
+            inputs: "{{tasks.list_tables.values.tables}}"
+            concurrency: 1
+            task:
+              task_key: ingest_table
+              run_job_task:
+                job_id: ${resources.jobs.ll_table_ingest.id}
+                job_parameters:
+                  catalog: "{{job.parameters.catalog}}"
+                  run_id: "{{job.parameters.run_id}}"
+                  table_metadata: "{{input}}"
+
+    ll_gold:
+      name: ll_gold
+      parameters:
+        - name: catalog
+          default: ${var.catalog}
+        - name: run_id
+          default: "{{job.run_id}}"
+      tasks:
+        - task_key: list_gold_tables
+          notebook_task:
+            notebook_path: ../notebooks/ingestion/01_list_tables.py
+            base_parameters:
+              source_system: silver
+        - task_key: for_each_gold_table
+          depends_on:
+            - task_key: list_gold_tables
+          for_each_task:
+            inputs: "{{tasks.list_gold_tables.values.tables}}"
+            concurrency: 1
+            task:
+              task_key: build_gold_table
+              notebook_task:
+                notebook_path: ../notebooks/gold/01_build_gold_table.py
+                base_parameters:
+                  table_metadata: "{{input}}"
+
+    ll_master:
+      name: ll_master
+      parameters:
+        - name: catalog
+          default: ${var.catalog}
+        - name: recipients
+          default: ${var.summary_recipients}
+        - name: sender
+          default: ${var.gmail_sender}
+      schedule:
+        quartz_cron_expression: "0 30 6 * * ?"   # 06:30 every day
+        timezone_id: Australia/Sydney
+        pause_status: PAUSED                      # unpause in the UI when you want it daily
+      tasks:
+        - task_key: ingest_sqlserver
+          run_job_task:
+            job_id: ${resources.jobs.ll_source_ingest.id}
+            job_parameters:
+              catalog: "{{job.parameters.catalog}}"
+              run_id: "{{job.run_id}}"
+              source_system: sqlserver
+        - task_key: ingest_files
+          depends_on:
+            - task_key: ingest_sqlserver
+          run_job_task:
+            job_id: ${resources.jobs.ll_source_ingest.id}
+            job_parameters:
+              catalog: "{{job.parameters.catalog}}"
+              run_id: "{{job.run_id}}"
+              source_system: files
+        - task_key: build_gold
+          depends_on:
+            - task_key: ingest_files
+          run_job_task:
+            job_id: ${resources.jobs.ll_gold.id}
+            job_parameters:
+              catalog: "{{job.parameters.catalog}}"
+              run_id: "{{job.run_id}}"
+        - task_key: send_run_summary
+          depends_on:
+            - task_key: build_gold
+          run_if: ALL_DONE
+          notebook_task:
+            notebook_path: ../notebooks/notify/01_send_run_summary.py
+            base_parameters:
+              run_id: "{{job.run_id}}"
+              bank_name: Coral Digital Bank

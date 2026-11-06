@@ -1,5 +1,5 @@
 # Progress
-<!-- ledgerlake-day: 10 -->
+<!-- ledgerlake-day: 11 -->
 
 LedgerLake is built in 13 daily steps. Each day's commit adds code; the checklist under it is the hands-on step that proves it works on Databricks. Tick the boxes and add your notes and numbers as you go.
 
@@ -128,6 +128,20 @@ LedgerLake is built in 13 daily steps. Each day's commit adds code; the checklis
 - [ ] Store your Gmail app password with `setup/01_create_secrets` (gmail_app_password widget only)
 - [ ] Run `notebooks/notify/01_send_run_summary` with run_id `manual`, sender = your Gmail, recipients = your email
 - [ ] Check the email arrives and the table matches `metadata.pipeline_runs`
+
+**Notes / numbers / issues hit:**
+-
+
+## Day 11 · Jobs as code · 2026-11-07
+**Built:** Databricks Asset Bundle with four jobs: per-table ingest, per-source for-each, gold for-each and a master job with one run_id, a run-if-all-done email task and a paused daily schedule.
+
+**Files:** `databricks.yml`, `resources/jobs.yml`
+
+**Hands-on step (do this in Databricks / Azure today):**
+- [ ] Install the Databricks CLI (`winget install Databricks.DatabricksCLI`) and run `databricks auth login --host <workspace-url>`
+- [ ] From the repo root: `databricks bundle validate`, then `databricks bundle deploy --var="summary_recipients=<you>" --var="gmail_sender=<you>@gmail.com"`
+- [ ] Run **ll_master** from Jobs & Pipelines and watch the for-each tasks; check the email
+- [ ] If anything fails, write down the error and the fix; it's an interview story
 
 **Notes / numbers / issues hit:**
 -
