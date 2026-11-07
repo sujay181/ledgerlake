@@ -1,5 +1,5 @@
 # Progress
-<!-- ledgerlake-day: 11 -->
+<!-- ledgerlake-day: 12 -->
 
 LedgerLake is built in 13 daily steps. Each day's commit adds code; the checklist under it is the hands-on step that proves it works on Databricks. Tick the boxes and add your notes and numbers as you go.
 
@@ -142,6 +142,20 @@ LedgerLake is built in 13 daily steps. Each day's commit adds code; the checklis
 - [ ] From the repo root: `databricks bundle validate`, then `databricks bundle deploy --var="summary_recipients=<you>" --var="gmail_sender=<you>@gmail.com"`
 - [ ] Run **ll_master** from Jobs & Pipelines and watch the for-each tasks; check the email
 - [ ] If anything fails, write down the error and the fix; it's an interview story
+
+**Notes / numbers / issues hit:**
+-
+
+## Day 12 · Checks, dashboard and Genie · 2026-11-08
+**Built:** Admin notebook (runs, watermarks, row counts by layer, rescued rows); eight dashboard datasets with widget notes; Genie space instructions and sample questions; test that every dashboard query runs.
+
+**Files:** `notebooks/admin/check_pipeline.py`, `dashboards/dashboard_queries.sql`, `dashboards/genie_space.md`, `tests/test_dashboards.py`
+
+**Hands-on step (do this in Databricks / Azure today):**
+- [ ] Load the incremental batch: `python source_data/load_sqlserver.py source_data/generated/sqlserver/batch_02_incremental` and upload the two `*_batch_02.csv` files
+- [ ] Run **ll_master** again, then `notebooks/admin/check_pipeline`: only new/changed rows read, duplicate credit pulls and repeated gateway events handled
+- [ ] Run ll_master a third time with no new data: it should load 0 rows
+- [ ] Build the AI/BI dashboard from `dashboards/dashboard_queries.sql` and the Genie space from `dashboards/genie_space.md`
 
 **Notes / numbers / issues hit:**
 -
