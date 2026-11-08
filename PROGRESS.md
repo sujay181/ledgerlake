@@ -1,5 +1,5 @@
 # Progress
-<!-- ledgerlake-day: 12 -->
+<!-- ledgerlake-day: 13 -->
 
 LedgerLake is built in 13 daily steps. Each day's commit adds code; the checklist under it is the hands-on step that proves it works on Databricks. Tick the boxes and add your notes and numbers as you go.
 
@@ -156,6 +156,20 @@ LedgerLake is built in 13 daily steps. Each day's commit adds code; the checklis
 - [ ] Run **ll_master** again, then `notebooks/admin/check_pipeline`: only new/changed rows read, duplicate credit pulls and repeated gateway events handled
 - [ ] Run ll_master a third time with no new data: it should load 0 rows
 - [ ] Build the AI/BI dashboard from `dashboards/dashboard_queries.sql` and the Genie space from `dashboards/genie_space.md`
+
+**Notes / numbers / issues hit:**
+-
+
+## Day 13 · Documentation · 2026-11-09
+**Built:** Full README: architecture diagram, job structure, metadata model, setup guide, design decisions, tests, limitations and credits.
+
+**Files:** `README.md`
+
+**Hands-on step (do this in Databricks / Azure today):**
+- [ ] Add real numbers from your runs to the README (rows per layer, ll_master run time, rows on the incremental run)
+- [ ] Add 2-3 screenshots (job run graph, dashboard, Genie answer) to a `docs/` folder and link them
+- [ ] Pin the repo on your GitHub profile
+- [ ] Ask Claude to add LedgerLake to the Project pool in career_facts.md with your measured numbers, and to draft a LinkedIn post
 
 **Notes / numbers / issues hit:**
 -
